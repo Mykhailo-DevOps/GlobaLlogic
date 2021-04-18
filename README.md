@@ -1,1 +1,1 @@
-# GlobaLlogic
+# GlobalLogic
