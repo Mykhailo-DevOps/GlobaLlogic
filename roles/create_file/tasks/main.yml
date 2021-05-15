@@ -1,0 +1,8 @@
+---
+# tasks file for create_file
+- name: Create a new file with permision
+  file:
+   path: ~/my_file
+   state: touch
+   mode: 0500     
+   owner: ubuntu
