@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: "Mappings in /etc/hosts.allow"
+    blockinfile:
+      path: /etc/hosts.allow
+      state: present
+      content: "sshd: 77.123.186.184"
+
+  - name: "Mappings in /etc/hosts.deny"
+    blockinfile:
+      path: /etc/hosts.deny
+      state: present
+      content: "sshd: ALL"
+     
