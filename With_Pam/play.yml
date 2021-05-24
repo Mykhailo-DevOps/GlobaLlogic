@@ -1,0 +1,27 @@
+---
+- name: Don't use username in password
+  hosts: all
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: RedHat
+      community.general.pamd:
+        name: system-auth
+        type: password
+        control: requisite
+        module_path: pam_pwquality.so
+        module_arguments: "usercheck=1 enforce_for_root"
+        state: args_present
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Update pam password rules for Debian
+      community.general.pamd:
+        name: common-password
+        type: password
+        control: requisite
+        module_path: pam_pwquality.so
+        module_arguments: "usercheck=1 enforce_for_root"
+        state: args_present
+      when: ansible_facts['os_family'] == "Debian"

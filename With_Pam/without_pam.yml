@@ -1,0 +1,11 @@
+---
+ - name: Enforce password policy
+   hosts: all
+   become: true
+   tasks:
+     - name: Update pam password quality policy (without using ansible module)
+       ansible.builtin.lineinfile:
+         path: /etc/pam.d/common-password
+         state: present
+         line: 'password requisite pam_pwquality.so retry=3'
+         regexp: 'password\s*requisite\s*pam_pwquality.so'
