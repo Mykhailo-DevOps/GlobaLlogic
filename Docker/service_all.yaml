@@ -1,0 +1,64 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name  : web-deploy
+  labels:
+    app : k8s-deploy
+spec:
+  selector:
+    matchLabels:
+      project: web
+  template:
+    metadata:
+      labels:
+        project: web # Service will look for these PODS Labels!!
+    spec:
+      containers:
+        - name  : k8-web
+          image: muxaylo/my-php-image:latest
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: scale
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-deploy
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+  - type: Resource
+    resource:    
+      name: memory
+      target: 
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: autoscalong-pods
+  labels:
+    env : prod
+    owner: MykhailoKolodii
+spec:
+  selector:
+    project: web
+  ports:
+    - name: listener
+      protocol: TCP
+      port    : 80
+      targetPort: 80
+  type: LoadBalancer
