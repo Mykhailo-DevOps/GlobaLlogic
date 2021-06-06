@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+  - host: www.mux.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /etc/hosts
+        backend:
+          service:
+            name: main
+            port:
+              number: 80
+
+  - host: www.mux1.net
+    http:
+      paths:
+        - pathType: Prefix
+          path: /etc/hosts
+          backend:
+            service:
+              name: web1
+              port:
+                number: 80
+  - host: www.mux2.net
+    http:
+      paths:
+        - pathType: Prefix
+          path: /etc/hosts
+          backend:
+            service:
+              name: web2
+              port:
+                number: 8080
+
+
+  - host: www.mux3.net
+    http:
+      paths:
+        - pathType: Prefix
+          path: /etc/hosts
+          backend:
+            service:
+              name: web3
+              port:
+                number: 8080
