@@ -1,0 +1,6 @@
+# Default Values for my Helm chart
+
+container:
+  image: muxaylo/my-php-image:latest
+
+replicaCount: 2
